@@ -13,3 +13,5 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     res.json(await campaign.addCampaign(req.body))
 })
+
+module.exports = router
