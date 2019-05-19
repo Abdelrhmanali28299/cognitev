@@ -28,6 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api', api)
 
+app.get('/', (req, res) => {
+    res.sendFile('views/home.html', {root: __dirname })
+})
 const port = process.env.PORT || 5050
 
 app.listen(port, () => {
