@@ -58,3 +58,5 @@ const compaign = (campaignDB) => {
     }
 
 }
+
+module.exports = compaign
