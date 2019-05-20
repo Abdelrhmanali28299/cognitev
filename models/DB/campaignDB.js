@@ -21,6 +21,16 @@ const campaignSchema = new Schema({
     category: {
         type: String,
         required: true
+    },
+    duration: {
+        start: {
+            type: Date,
+            default: Date.now
+        },
+        end: {
+            type: Date,
+            required: true
+        }
     }
 })
 
