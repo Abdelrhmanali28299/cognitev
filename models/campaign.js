@@ -17,7 +17,7 @@ const compaign = function (campaignDB) {
 
     this.addCampaign = async (campaign) => {
 
-        if (campaign.budget == 149 || campaign.budget == 399 || campaign.budget == 999 ) {
+        if (campaign.budget == 149 || campaign.budget == 399 || campaign.budget == 999) {
             let category = campaign.category
             if (category) {
 

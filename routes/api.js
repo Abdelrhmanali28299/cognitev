@@ -7,11 +7,19 @@ const router = express.Router()
 const campaign = new Campaign(CampaignDB)
 
 router.get('/', async (req, res) => {
-    res.json(await campaign.getCampaign())
+    let campaigns = await campaign.getCampaign()
+    if (campaigns.error) {
+        res.status(404)
+    }
+    res.json(campaigns)
 })
 
 router.post('/', async (req, res) => {
-    res.json(await campaign.addCampaign(req.body))
+    let newCampaign = await campaign.addCampaign(req.body)
+    if (newCampaign.error) {
+        res.status(404)
+    }
+    res.json(newCampaign)
 })
 
 module.exports = router

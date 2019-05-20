@@ -14,11 +14,11 @@ const campaignSchema = new Schema({
         type: Number,
         required: true
     },
-    goal:{
+    goal: {
         type: String,
         required: true
     },
-    category:{
+    category: {
         type: String,
         required: true
     }
