@@ -1,14 +1,24 @@
 const mongoose = require('mongoose')
-const request = require('request')
+const request = require('request-promise')
 
-const compaign = (campaignDB) => {
-    
+const compaign = function (campaignDB) {
+
     this.campaignDB = campaignDB
 
+    this.getCategory = async () => {
+        return request('https://ngkc0vhbrl.execute-api.eu-west-1.amazonaws.com/api/?url=https://arabic.cnn.com/')
+            .then(body => {
+                return JSON.parse(body).category.name
+            })
+            .catch(err => {
+                return {"error": err}
+            });
+    }
+
     this.addCampaign = async (campaign) => {
-        
+
         let category = campaign.category
-        if(category) {
+        if (category) {
 
             let newCampaign = new this.campaignDB({
                 name: campaign.name,
@@ -21,39 +31,36 @@ const compaign = (campaignDB) => {
             return newCampaign
                 .save()
                 .catch(err => {
-                    return {"error": err}
+                    return { "error": err }
                 })
         } else {
-            request('https://ngkc0vhbrl.execute-api.eu-west-1.amazonaws.com/api/?url=https://arabic.cnn.com/', function (error, response, body) {
-                if(error)
-                    return {"error": error}
-                if(response) {
-                    category = body.category.name
-
-                    let newCampaign = new this.campaignDB({
-                        name: campaign.name,
-                        country: campaign.country,
-                        budget: campaign.budget,
-                        goal: campaign.goal,
-                        category
+            let category = await this.getCategory()
+            if(!category.error) {
+                let newCampaign = new this.campaignDB({
+                    name: campaign.name,
+                    country: campaign.country,
+                    budget: campaign.budget,
+                    goal: campaign.goal,
+                    category
+                })
+    
+                return newCampaign
+                    .save()
+                    .catch(err => {
+                        return { "error": err }
                     })
-        
-                    return newCampaign
-                        .save()
-                        .catch(err => {
-                            return {"error": err}
-                        })
-                }
-            })
+            } else {
+                return { "error": category.error}
+            }
         }
-        
+
     }
 
-    this.getCampaign = async () =>{
+    this.getCampaign = async () => {
         return this.campaignDB
-            .find({})
+            .find()
             .catch(err => {
-                return {"error": err}
+                return { "error": err }
             })
     }
 
