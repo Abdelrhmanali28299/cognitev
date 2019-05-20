@@ -11,31 +11,16 @@ const compaign = function (campaignDB) {
                 return JSON.parse(body).category.name
             })
             .catch(err => {
-                return {"error": err}
+                return { "error": err }
             });
     }
 
     this.addCampaign = async (campaign) => {
 
-        let category = campaign.category
-        if (category) {
+        if (campaign.budget == 149 || campaign.budget == 399 || campaign.budget == 999 ) {
+            let category = campaign.category
+            if (category) {
 
-            let newCampaign = new this.campaignDB({
-                name: campaign.name,
-                country: campaign.country,
-                budget: campaign.budget,
-                goal: campaign.goal,
-                category
-            })
-
-            return newCampaign
-                .save()
-                .catch(err => {
-                    return { "error": err }
-                })
-        } else {
-            let category = await this.getCategory()
-            if(!category.error) {
                 let newCampaign = new this.campaignDB({
                     name: campaign.name,
                     country: campaign.country,
@@ -43,15 +28,34 @@ const compaign = function (campaignDB) {
                     goal: campaign.goal,
                     category
                 })
-    
+
                 return newCampaign
                     .save()
                     .catch(err => {
                         return { "error": err }
                     })
             } else {
-                return { "error": category.error}
+                let category = await this.getCategory()
+                if (!category.error) {
+                    let newCampaign = new this.campaignDB({
+                        name: campaign.name,
+                        country: campaign.country,
+                        budget: campaign.budget,
+                        goal: campaign.goal,
+                        category
+                    })
+
+                    return newCampaign
+                        .save()
+                        .catch(err => {
+                            return { "error": err }
+                        })
+                } else {
+                    return { "error": category.error }
+                }
             }
+        } else {
+            return { "error": "Wrong Budget" }
         }
 
     }
