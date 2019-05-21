@@ -18,7 +18,7 @@ mongoose
         console.log(err)
     })
 
-
+app.use(express.static(path.join(__dirname, 'views')))
 app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: false }))

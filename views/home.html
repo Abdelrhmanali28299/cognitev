@@ -1,12 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.min.js"></script>
     <title>Home</title>
 </head>
+
 <body>
-    
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <script>
+
+        //generate random rgba color
+        function random_rgba() {
+            var o = Math.round, r = Math.random, s = 255;
+            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',';
+        }
+
+        //call API
+        const url = "/api/";
+        fetch(url)
+            .then(response => {
+                return response.json()
+            })
+            .then(campaigns => {
+                
+                //set pramter of Graph
+                let labels = [];  //countries
+                let datasets = [];  //array of obj
+                let obj = {
+                    label: "", //catigory
+                    fillColor: "",
+                    strokeColor: "",
+                    highlightFill: "",
+                    highlightStroke: "",
+                    data: [] // y-axis
+                };
+
+                campaigns.forEach(campaign => {
+                    let index = labels.indexOf(campaign.country);
+                    if (index == -1) {
+                        labels.push(campaign.country)
+                    }
+                });
+
+                let check;
+                let index;
+                campaigns.forEach(campaign => {
+                    check = true;
+                    index = -1;
+                    for (let i = 0; i < datasets.length; i++) {
+                        if (datasets[i].label == campaign.category) {
+                            check = false;
+                            index = i;
+                            break;
+                        }
+                    }
+                    if (check === true) {
+                        obj.label = campaign.category;
+                        for (let i = 0; i < labels.length; i++)
+                            obj.data.push(0);
+                        datasets.push(obj);
+                        datasets[datasets.length - 1].data[labels.indexOf(campaign.country)]++;
+                        obj = {
+                            label: "", //catigory
+                            fillColor: "",
+                            strokeColor: "",
+                            highlightFill: "",
+                            highlightStroke: "",
+                            data: [] // y-axis
+                        };
+                    } else {
+                        datasets[index].data[labels.indexOf(campaign.country)]++;
+                    }
+                })
+
+                for (let index = 0; index < datasets.length; index++) {
+                    let x = random_rgba();
+                    datasets[index].fillColor = x + '0.8)';
+                    datasets[index].strokeColor = x + '0.8)';
+                    datasets[index].highlightFill = x + '0.75)';
+                    datasets[index].highlightStroke = x + '1)';
+                }
+
+                var chrt = document.getElementById("myChart").getContext("2d");
+                var data = {
+                    labels, //x-axis
+                    datasets
+                };
+                var myFirstChart = new Chart(chrt).Bar(data);
+            })
+    </script>
 </body>
+
 </html>
