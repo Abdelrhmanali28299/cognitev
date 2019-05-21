@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const keys = require('./config')
 const api = require('./routes/api')
+const dashboard = require('./routes/dashboard')
 
 const app = express()
 mongoose.Promise = global.Promise
@@ -27,10 +28,12 @@ app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api', api)
+app.use('/dashboard', dashboard)
 
 app.get('/', (req, res) => {
     res.sendFile('views/home.html', {root: __dirname })
 })
+
 const port = process.env.PORT || 5050
 
 app.listen(port, () => {

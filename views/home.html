@@ -10,8 +10,8 @@
 </head>
 
 <body>
+    <a href="/dashboard">manage Dashboard</a>
     <canvas id="myChart" width="400" height="400"></canvas>
-
     <script>
 
         //generate random rgba color
@@ -39,7 +39,8 @@
                     highlightStroke: "",
                     data: [] // y-axis
                 };
-
+                
+                //find countries and save in array
                 campaigns.forEach(campaign => {
                     let index = labels.indexOf(campaign.country);
                     if (index == -1) {
@@ -47,6 +48,7 @@
                     }
                 });
 
+                //build obj and save it in the datasets
                 let check;
                 let index;
                 campaigns.forEach(campaign => {
@@ -65,19 +67,21 @@
                             obj.data.push(0);
                         datasets.push(obj);
                         datasets[datasets.length - 1].data[labels.indexOf(campaign.country)]++;
+                        //reset obj
                         obj = {
-                            label: "", //catigory
+                            label: "",
                             fillColor: "",
                             strokeColor: "",
                             highlightFill: "",
                             highlightStroke: "",
-                            data: [] // y-axis
+                            data: []
                         };
                     } else {
                         datasets[index].data[labels.indexOf(campaign.country)]++;
                     }
                 })
 
+                //set colors for graph
                 for (let index = 0; index < datasets.length; index++) {
                     let x = random_rgba();
                     datasets[index].fillColor = x + '0.8)';
@@ -86,6 +90,7 @@
                     datasets[index].highlightStroke = x + '1)';
                 }
 
+                //drow graph
                 var chrt = document.getElementById("myChart").getContext("2d");
                 var data = {
                     labels, //x-axis
