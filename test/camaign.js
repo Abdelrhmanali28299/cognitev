@@ -45,4 +45,18 @@ describe("Campaign test", () => {
         expect(newCampaign._id).toEqual(mongoose.Types.ObjectId(mockCampaign._id));
     })
 
+    it("edit post endpoint", async () => {
+        const campaign = new Campaign(CampaignDB)
+        const mockCampaign = {
+            "_id": "5ce3756cd39d434c8c4fce96",
+            "name": "n2",
+            "country": "USA",
+            "budget": 149,
+            "goal": "Awareness",
+            "category": "Technology"
+        }
+        let newCampaign = await campaign.updateCampaign("5ce3756cd39d434c8c4fce96", mockCampaign)
+        expect(newCampaign.name).toEqual(mockCampaign.name)
+    })
+
 })
