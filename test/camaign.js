@@ -59,4 +59,10 @@ describe("Campaign test", () => {
         expect(newCampaign.name).toEqual(mockCampaign.name)
     })
 
+    it("delete post endpoint", async () => {
+        const campaign = new Campaign(CampaignDB)
+        let result = await campaign.deleteCampaign("5ce3756cd39d434c8c4fce96")
+        expect(result.done).toEqual(true)
+    })
+    
 })
