@@ -34,7 +34,7 @@ jobs:
           docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASS"
 
       # build docker image
-      - run: docker build -t abdelrhmanali/commuinty-sw2 .
+      - run: docker build -t abdelrhmanali/cognitev .
 
       # push docker image
-      - run: docker push abdelrhmanali/commuinty-sw2
+      - run: docker push abdelrhmanali/cognitev
