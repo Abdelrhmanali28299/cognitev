@@ -29,14 +29,26 @@ const compaign = function (campaignDB) {
 
             let category = campaign.category
             if (category) {
+                let newCampaign
+                if(campaign._id) {
+                    newCampaign = new this.campaignDB({
+                        _id: mongoose.Types.ObjectId(campaign._id),
+                        name: campaign.name,
+                        country: campaign.country,
+                        budget: campaign.budget,
+                        goal: campaign.goal,
+                        category
+                    })
+                } else {
 
-                let newCampaign = new this.campaignDB({
-                    name: campaign.name,
-                    country: campaign.country,
-                    budget: campaign.budget,
-                    goal: campaign.goal,
-                    category
-                })
+                    newCampaign = new this.campaignDB({
+                        name: campaign.name,
+                        country: campaign.country,
+                        budget: campaign.budget,
+                        goal: campaign.goal,
+                        category
+                    })
+                }
 
                 return newCampaign
                     .save()
@@ -46,13 +58,27 @@ const compaign = function (campaignDB) {
             } else {
                 let category = await this.getCategory()
                 if (!category.error) {
-                    let newCampaign = new this.campaignDB({
-                        name: campaign.name,
-                        country: campaign.country,
-                        budget: campaign.budget,
-                        goal: campaign.goal,
-                        category
-                    })
+                    let newCampaign 
+
+                    if(campaign._id) {
+                        newCampaign = new this.campaignDB({
+                            _id: mongoose.Types.ObjectId(campaign._id),
+                            name: campaign.name,
+                            country: campaign.country,
+                            budget: campaign.budget,
+                            goal: campaign.goal,
+                            category
+                        })
+                    } else {
+    
+                        newCampaign = new this.campaignDB({
+                            name: campaign.name,
+                            country: campaign.country,
+                            budget: campaign.budget,
+                            goal: campaign.goal,
+                            category
+                        })
+                    }
 
                     return newCampaign
                         .save()
